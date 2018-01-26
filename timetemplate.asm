@@ -16,6 +16,7 @@
 	.align 2
 mytime:	.word 0x5957
 timstr:	.ascii "text more text lots of text\0"
+
 	.text
 main:
 	# print timstr
@@ -86,30 +87,34 @@ delay:
 	jr $ra
 	nop
   #
-time2tostring:
-	andi	$a0,$a0,0x0
-loop:
-	PUSH 	($a0)
-	jal 	hexasc
-	sll 	$a0,$a0,1
-	or	$a1,$a1,$a0
-	POP 	($a0)
-	srl	$a0,$a0,4
-	PUSH 	($a0)
-	jal	hexasc
-	sll 	$a0,$a0,4
-	or 	$a1,$a1,$a0
-	POP 	($a0)
-	srl	$a0,$a0,4
-	PUSH 	($a0)
-	jal	hexasc
-	sll 	$a0,$a0,5
-	or 	$a1,$a1,$a0
-	POP 	($a0)
-	srl	$a0,$a0,4
-	PUSH 	($a0)
-	jal	hexasc
-	sll 	$a0,$a0,4
-	or 	$a1,$a1,$a0
-	POP 	($a0)
-	
+time2string:
+	PUSH	($ra)
+	PUSH 	($s0) #preserve $s0
+	PUSH	($s1) #preserve $s1
+	PUSH	($s2) #preserve $s2
+	move	$s0,$a0 #save output address
+
+	sb		$0,5($s0) #write NUL at byte 5
+
+	addi	$t0,$0,0x3A #write the ASCII colon char to temp register
+	sb  	$t0,2($s0)#write colon at byte 3
+
+	addi 	$s1,$0,4 #byte offset for writing
+	addi 	$s2,$0,2 #hardcode loop to skip offset 2
+
+	loop:
+	beq		$s1,$s2,decrementshift #see if offset is 2 (don't overwrite colon)
+	move	$a0,$a1 #prepare hexasc input
+	jal 	hexasc #convert first digit to ASCII
+	addi 	$t0,$s0,$s1 #calculate memory with offset
+	sb		$v0,0,($t0) #write $v0 into memory
+	srl		$a1,$a1,4 #delete last number from input
+	decrementshift:
+	addi	$s1,$s1,0xffff
+	bgez	$s1,loop
+
+	POP		($s2)
+	POP		($s1)
+	POP 	($s0)
+	POP 	($ra)
+	jr	$ra
