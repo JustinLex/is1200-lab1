@@ -79,3 +79,4 @@
 				POP 	($s0)
 				POP 	($ra)
 				jr	$ra
+				nop
