@@ -62,7 +62,7 @@ delay:
 				addi 	$s2,$0,2 #hardcode loop to skip offset 2
 
 				loop:
-				beq		$s1,$s2,decrementshift #see if offset is 2 (don't overwrite colon)
+				beq		$s1,$s2,decrementoffset #skip if offset is 2 (don't overwrite colon)
 				move	$a0,$a1 #prepare hexasc input
 
 				jal 	hexasc #convert first digit to ASCII
@@ -70,7 +70,7 @@ delay:
 				add 	$t0,$s0,$s1 #calculate memory with offset
 				sb		$v0,0($t0) #write $v0 into memory
 				srl		$a1,$a1,4 #delete last number from input
-				decrementshift:
+				decrementoffset:
 				bgez	$s1,loop
 				addiu	$s1,$s1,-1
 
