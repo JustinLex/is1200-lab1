@@ -83,10 +83,17 @@ hexasc:
 hop:
 	addi	$v0,$a0,48
 	jr	$ra
+
 delay:
+	addi $t0,$0,4711
+delayloop:
+	addiu $t0,$t0,-1
+	bne 	$t0,$0,delayloop
+	addiu $a0,$a0,-1
+	bne		$a0, $0,delay
 	jr $ra
 	nop
-  #
+
 time2string:
 	PUSH	($ra)
 	PUSH 	($s0) #preserve $s0
