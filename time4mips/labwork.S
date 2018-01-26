@@ -22,27 +22,26 @@
 
 	hexasc:
 		andi	$a0,$a0,0xf
-		li	$t0,9
 		ble	$a0,$t0,hop
-		nop
-		addi	$v0,$a0,55
+		addi	$t0,$0,9
+
 		jr 	$ra
-		nop
+		addi	$v0,$a0,55
+
 	hop:
-		addi	$v0,$a0,48
 		jr	$ra
-		nop
+		addi	$v0,$a0,48
 
 .global	delay
 delay:
 			addi $t0,$0,800
 		delayloop:
-			addiu $t0,$t0,-1
 			bne 	$t0,$0,delayloop
-			nop
-			addiu $a0,$a0,-1
+			addiu $t0,$t0,-1
+
 			bne		$a0, $0,delay
-			nop
+			addiu $a0,$a0,-1
+
 			jr $ra
 			nop
 
@@ -64,21 +63,20 @@ delay:
 
 				loop:
 				beq		$s1,$s2,decrementshift #see if offset is 2 (don't overwrite colon)
-				nop
 				move	$a0,$a1 #prepare hexasc input
+
 				jal 	hexasc #convert first digit to ASCII
 				nop
 				add 	$t0,$s0,$s1 #calculate memory with offset
 				sb		$v0,0($t0) #write $v0 into memory
 				srl		$a1,$a1,4 #delete last number from input
 				decrementshift:
-				addiu	$s1,$s1,-1
 				bgez	$s1,loop
-				nop
+				addiu	$s1,$s1,-1
 
 				POP		$s2
 				POP		$s1
 				POP 	$s0
-				POP 	$ra
+				lw	$ra,0($sp)
 				jr	$ra
-				nop
+				addi	$sp,$sp,4
