@@ -73,4 +73,43 @@ tiend:	sw	$t0,0($a0)	# save updated result
 	nop
 
   # you can write your code for subroutine "hexasc" below this line
+hexasc:
+	andi	$a0,$a0,0xf
+	li	$t0,9
+	ble	$a0,$t0,hop
+	addi	$v0,$a0,55
+	jr 	$ra
+hop:
+	addi	$v0,$a0,48
+	jr	$ra
+delay:
+	jr $ra
+	nop
   #
+time2tostring:
+	andi	$a0,$a0,0x0
+loop:
+	PUSH 	($a0)
+	jal 	hexasc
+	sll 	$a0,$a0,1
+	or	$a1,$a1,$a0
+	POP 	($a0)
+	srl	$a0,$a0,4
+	PUSH 	($a0)
+	jal	hexasc
+	sll 	$a0,$a0,4
+	or 	$a1,$a1,$a0
+	POP 	($a0)
+	srl	$a0,$a0,4
+	PUSH 	($a0)
+	jal	hexasc
+	sll 	$a0,$a0,5
+	or 	$a1,$a1,$a0
+	POP 	($a0)
+	srl	$a0,$a0,4
+	PUSH 	($a0)
+	jal	hexasc
+	sll 	$a0,$a0,4
+	or 	$a1,$a1,$a0
+	POP 	($a0)
+	
