@@ -110,7 +110,7 @@ time2string:
 	sb		$v0,0,($t0) #write $v0 into memory
 	srl		$a1,$a1,4 #delete last number from input
 	decrementshift:
-	addi	$s1,$s1,0xffff
+	addiu	$s1,$s1,-1
 	bgez	$s1,loop
 
 	POP		($s2)
