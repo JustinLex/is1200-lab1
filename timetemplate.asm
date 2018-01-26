@@ -25,7 +25,7 @@ main:
 	syscall
 	nop
 	# wait a little
-	li	$a0,2
+	li	$a0,1000
 	jal	delay
 	nop
 	# call tick
@@ -85,7 +85,7 @@ hop:
 	jr	$ra
 
 delay:
-	addi $t0,$0,4711
+	addi $t0,$0,800
 delayloop:
 	addiu $t0,$t0,-1
 	bne 	$t0,$0,delayloop
