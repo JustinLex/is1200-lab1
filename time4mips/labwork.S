@@ -33,7 +33,8 @@
 		jr	$ra
 		nop
 
-		delay:
+.global	delay
+delay:
 			addi $t0,$0,800
 		delayloop:
 			addiu $t0,$t0,-1
@@ -45,11 +46,12 @@
 			jr $ra
 			nop
 
+.global	time2string
 			time2string:
-				PUSH	($ra)
-				PUSH 	($s0) #preserve $s0
-				PUSH	($s1) #preserve $s1
-				PUSH	($s2) #preserve $s2
+				PUSH	$ra
+				PUSH 	$s0 #preserve $s0
+				PUSH	$s1 #preserve $s1
+				PUSH	$s2 #preserve $s2
 				move	$s0,$a0 #save output address
 
 				sb		$0,5($s0) #write NUL at byte 5
@@ -67,16 +69,16 @@
 				jal 	hexasc #convert first digit to ASCII
 				nop
 				add 	$t0,$s0,$s1 #calculate memory with offset
-				sb		$v0,0,($t0) #write $v0 into memory
+				sb		$v0,0($t0) #write $v0 into memory
 				srl		$a1,$a1,4 #delete last number from input
 				decrementshift:
 				addiu	$s1,$s1,-1
 				bgez	$s1,loop
 				nop
 
-				POP		($s2)
-				POP		($s1)
-				POP 	($s0)
-				POP 	($ra)
+				POP		$s2
+				POP		$s1
+				POP 	$s0
+				POP 	$ra
 				jr	$ra
 				nop
