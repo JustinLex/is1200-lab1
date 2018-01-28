@@ -86,7 +86,10 @@ hop:
 	addi	$v0,$a0,48
 	jr	$ra
 	nop
+	
 delay:
+	blez $a0 nomoredelay
+	nop
 	addi $t0,$0,800
 delayloop:
 	addiu $t0,$t0,-1
@@ -95,6 +98,7 @@ delayloop:
 	addiu $a0,$a0,-1
 	bne		$a0, $0,delay
 	nop
+nomoredelay:
 	jr $ra
 	nop
 

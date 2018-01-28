@@ -32,7 +32,8 @@
 
 .global	delay
 delay:
-			addi $t0,$0,800
+			blez $a0 nomoredelay
+			addi $t0,$0,800 #[delay-slot]
 		delayloop:
 			bne 	$t0,$0,delayloop
 			addiu $t0,$t0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
