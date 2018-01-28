@@ -22,8 +22,9 @@
 
 	hexasc:
 		andi	$a0,$a0,0xf
+		addi	$t0,$0,9
 		ble	$a0,$t0,hop
-		addi	$t0,$0,9 #[delay-slot] (may introduce bug with branch condition, idk)
+		nop #[delay-slot]
 		jr 	$ra
 		addi	$v0,$a0,55 #[delay-slot]
 	hop:
@@ -35,10 +36,12 @@ delay:
 			blez $a0 nomoredelay
 			addi $t0,$0,800 #[delay-slot]
 		delayloop:
+			addiu $t0,$t0,-1
 			bne 	$t0,$0,delayloop
-			addiu $t0,$t0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
+			nop #[delay-slot]
+			addiu $a0,$a0,-1
 			bne		$a0, $0,delay
-			addiu $a0,$a0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
+			nop #[delay-slot]
 		nomoredelay:
 			jr $ra
 			nop #[delay-slot]
@@ -68,8 +71,10 @@ delay:
 				sb		$v0,0($t0) #write $v0 into memory
 				srl		$a1,$a1,4 #delete last number from input
 				decrementoffset:
+				addiu	$s1,$s1,-1
 				bgez	$s1,loop
-				addiu	$s1,$s1,-1 #[delay-slot] (may introduce bug with branch condition, idk)
+				nop #[delay-slot]
+
 
 				POP		$s2
 				POP		$s1
