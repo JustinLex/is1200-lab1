@@ -39,6 +39,7 @@ delay:
 			addiu $t0,$t0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
 			bne		$a0, $0,delay
 			addiu $a0,$a0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
+		nomoredelay:
 			jr $ra
 			nop #[delay-slot]
 
