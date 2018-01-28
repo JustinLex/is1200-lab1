@@ -23,27 +23,23 @@
 	hexasc:
 		andi	$a0,$a0,0xf
 		ble	$a0,$t0,hop
-		addi	$t0,$0,9
-
+		addi	$t0,$0,9 #[delay-slot] (may introduce bug with branch condition, idk)
 		jr 	$ra
-		addi	$v0,$a0,55
-
+		addi	$v0,$a0,55 #[delay-slot]
 	hop:
 		jr	$ra
-		addi	$v0,$a0,48
+		addi	$v0,$a0,48 #[delay-slot]
 
 .global	delay
 delay:
 			addi $t0,$0,800
 		delayloop:
 			bne 	$t0,$0,delayloop
-			addiu $t0,$t0,-1
-
+			addiu $t0,$t0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
 			bne		$a0, $0,delay
-			addiu $a0,$a0,-1
-
+			addiu $a0,$a0,-1 #[delay-slot] (may introduce bug with branch condition, idk)
 			jr $ra
-			nop
+			nop #[delay-slot]
 
 .global	time2string
 			time2string:
@@ -63,20 +59,19 @@ delay:
 
 				loop:
 				beq		$s1,$s2,decrementoffset #skip if offset is 2 (don't overwrite colon)
-				move	$a0,$a1 #prepare hexasc input
-
+				move	$a0,$a1 #prepare hexasc input [delay-slot]
 				jal 	hexasc #convert first digit to ASCII
-				nop
+				nop #[delay-slot]
 				add 	$t0,$s0,$s1 #calculate memory with offset
 				sb		$v0,0($t0) #write $v0 into memory
 				srl		$a1,$a1,4 #delete last number from input
 				decrementoffset:
 				bgez	$s1,loop
-				addiu	$s1,$s1,-1
+				addiu	$s1,$s1,-1 #[delay-slot] (may introduce bug with branch condition, idk)
 
 				POP		$s2
 				POP		$s1
 				POP 	$s0
 				lw	$ra,0($sp)
 				jr	$ra
-				addi	$sp,$sp,4
+				addi	$sp,$sp,4 #[delay-slot]
