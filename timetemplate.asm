@@ -136,3 +136,4 @@ time2string:
 	POP 	($s0)
 	POP 	($ra)
 	jr	$ra
+	nop
