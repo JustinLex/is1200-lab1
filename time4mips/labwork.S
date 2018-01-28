@@ -33,7 +33,7 @@ hexasc:
 
 .global	delay
 delay:
-	blez $a0 nomoredelay
+	blez $a0,nomoredelay
 	addi $t0,$0,800 #[delay-slot]
 	delayloop:
 		addiu $t0,$t0,-1
