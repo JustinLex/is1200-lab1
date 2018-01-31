@@ -86,7 +86,7 @@ hop:
 	addi	$v0,$a0,48
 	jr	$ra
 	nop
-	
+
 delay:
 	blez $a0 nomoredelay
 	nop
@@ -130,6 +130,15 @@ time2string:
 	addiu	$s1,$s1,-1
 	bgez	$s1,loop
 	nop
+
+	lb	$t0,4($s0)
+	addi	$t7,$0,57
+	bne	$t0,$t7,notnine
+	nop
+	addi	$t6,$0,0x454e494e
+	sw	$t6,4($s0)
+	sb	$0,8($s0)
+	notnine:
 
 	POP		($s2)
 	POP		($s1)
